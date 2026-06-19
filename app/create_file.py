@@ -3,6 +3,13 @@ import os
 from datetime import datetime
 
 
+def find_next_flag(start_idx: int) -> int:
+    for i in range(start_idx + 1, len(sys.argv)):
+        if sys.argv[i].startswith("-"):
+            return i
+    return len(sys.argv)
+
+
 def parse_arguments() -> tuple[list, str | None]:
     if "-d" in sys.argv and "-f" in sys.argv:
         idx_d = sys.argv.index("-d")
@@ -12,7 +19,8 @@ def parse_arguments() -> tuple[list, str | None]:
             dirs = sys.argv[idx_d + 1:idx_f]
             filename = sys.argv[idx_f + 1]
         else:
-            dirs = sys.argv[idx_d + 1:]
+            next_flag_idx = find_next_flag(idx_d)
+            dirs = sys.argv[idx_d + 1:next_flag_idx]
             filename = sys.argv[idx_f + 1]
 
     elif "-d" in sys.argv:
